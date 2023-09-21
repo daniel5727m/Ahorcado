@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Juego de Ahorcado</title>
+  <link rel="stylesheet" href="./style.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -59,7 +60,7 @@
   <p id="letras"></p>
   <p>Intentos restantes:</p>
   <p id="intentos"></p>
-  <p><input type="text" id="letra" maxlength="1"><button onclick="verificarLetra()">Adivinar</button></p>
+  <p><input type="text" id="letra" maxlength="1"><button class="adivinar" onclick="verificarLetra()">Adivinar</button></p>
   <div class="resultado" id="resultado"></div>
   <button onclick="nuevaPartida()">Nueva Partida</button>
 

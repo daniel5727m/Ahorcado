@@ -1,0 +1,10 @@
+/* Agrega un margen derecho al input para crear espacio entre él y el botón */
+#letra {
+    margin-right: 30px; /* Puedes ajustar la cantidad de espacio según tus preferencias */
+  }
+  
+  /* Alinear verticalmente el botón con el input */
+  .adivinar {
+    vertical-align: middle;
+  }
+  
