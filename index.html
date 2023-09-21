@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Juego de Ahorcado</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      color: #007bff;
+    }
+
+    p {
+      font-size: 20px;
+    }
+
+    #palabra, #letras, #intentos {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input[type="text"] {
+      font-size: 20px;
+      padding: 5px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 5px 15px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .resultado {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Juego de Ahorcado</h1>
+  <p>Adivina la palabra:</p>
+  <p id="palabra"></p>
+  <p>Letras usadas:</p>
+  <p id="letras"></p>
+  <p>Intentos restantes:</p>
+  <p id="intentos"></p>
+  <p><input type="text" id="letra" maxlength="1"><button onclick="verificarLetra()">Adivinar</button></p>
+  <div class="resultado" id="resultado"></div>
+  <button onclick="nuevaPartida()">Nueva Partida</button>
+
+  <script>
+    var palabras = ["casa", "perro", "gato", "coche", "jardín"];
+    var palabra = "";
+    var palabraOculta = "";
+    var letrasUsadas = "";
+    var intentosRestantes = 6;
+
+    function nuevaPartida() {
+      // Reiniciar variables y seleccionar una nueva palabra
+      palabra = palabras[Math.floor(Math.random() * palabras.length)];
+      palabraOculta = "_".repeat(palabra.length);
+      letrasUsadas = "";
+      intentosRestantes = 6;
+      actualizarPalabra();
+      actualizarLetras();
+      actualizarIntentos();
+      document.getElementById("resultado").innerHTML = ""; // Limpiar el mensaje de resultado
+    }
+
+    function actualizarPalabra() {
+      document.getElementById("palabra").innerHTML = palabraOculta;
+    }
+
+    function actualizarLetras() {
+      document.getElementById("letras").innerHTML = letrasUsadas;
+    }
+
+    function actualizarIntentos() {
+      document.getElementById("intentos").innerHTML = intentosRestantes;
+    }
+
+    function mostrarResultado(mensaje, color) {
+      var resultado = document.getElementById("resultado");
+      resultado.innerHTML = mensaje;
+      resultado.style.backgroundColor = color;
+      setTimeout(function() {
+        resultado.innerHTML = "";
+        resultado.style.backgroundColor = "transparent";
+      }, 3000);
+    }
+
+    function verificarLetra() {
+      var letra = document.getElementById("letra").value.toLowerCase();
+      if (letra.length != 1 || !letra.match(/[a-z]/i)) {
+        mostrarResultado("Introduce una letra válida.", "#f44336");
+        return;
+      }
+      if (letrasUsadas.includes(letra)) {
+        mostrarResultado("Ya has usado esa letra.", "#f44336");
+        return;
+      }
+      letrasUsadas += letra + ", ";
+      if (palabra.includes(letra)) {
+        for (var i = 0; i < palabra.length; i++) {
+          if (palabra[i] == letra) {
+            palabraOculta = palabraOculta.substring(0, i) + letra + palabraOculta.substring(i + 1);
+          }
+        }
+        actualizarPalabra();
+        if (!palabraOculta.includes("_")) {
+          mostrarResultado("¡Felicidades, has ganado!", "#4caf50");
+        }
+      } else {
+        intentosRestantes--;
+        actualizarIntentos();
+        if (intentosRestantes == 0) {
+          mostrarResultado("Lo siento, has perdido. La palabra era " + palabra + ".", "#f44336");
+        }
+      }
+      actualizarLetras();
+      document.getElementById("letra").value = "";
+    }
+
+    nuevaPartida(); // Iniciar una nueva partida al cargar la página
+  </script>
+</body>
+</html>
